@@ -1,74 +1,87 @@
 import React from "react";
 import "../../../styles/frndPop.css";
-import { instance } from "../../../utils/AxiosConfig";
-import { userActionCreator } from "../../../redux/actionCreator/userAction";
-import { store } from "../../../redux/store";
-import { connect } from "react-redux";
-const Friend = props => {
-  var takeInp = { defaultUser: "" };
+//import {instance}  from "../../../utils/AxiosConfig";
+// import { userActionCreator } from "../../../redux/actionCreator/userAction";
+// import { store } from "../../../redux/store";
+// import { connect } from "react-redux";
+import { useNavigate,useLocation } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+const Friend = (props) => {
+  const [takeInp, setTakeInp] = useState({ defaultUser: "", username: " " });
+  axios.defaults.withCredentials = true;
+  const [show, setShow] = useState(true);
+  // let location=useLocation();
+ let navigation=useNavigate();
+  const handleclick = () => {
+    setShow(!show);
+    //window.location.reload();
+    var Data=props.user;
+    navigation("/Dashboard",{state:Data});
+    
+  };
+
   return (
-    <div className="friendPopup">
-      <div className="frnd-content">
-        <div className="frnd-header">
-          <span>Add a Friend</span>
-          <button className="float-right" onClick={props.friend}>
-            <i class="fas fa-times" />
-          </button>
-        </div>
+    <div>
+      {show ? (
+        <div className="friendPopup">
+          <div className="frnd-content">
+            <div className="frnd-header">
+              <span>Add a Friend</span>
+            </div>
 
-        <input
-          id="username"
-          onChange={event => {
-            takeInp[event.target.id] = event.target.value;
-          }}
-          placeholder="Type a username"
-          className="frnd-name"
-          type="text"
-        />
-
-        <div className="pop-btn">
-          <button
-            className="btn Add"
-            onClick={() => {
-              takeInp.defaultUser = props.user.username;
-            
-              if(takeInp.username == props.user.username){
-                 alert("you can't add yourself as your Friend");
-                 return;
-              }
-              instance
-                .post("/AddFriend", takeInp)
-                .then(resp => {
-                  if (resp.data.doc) {
-                    var action = userActionCreator(resp.data.doc, "AddUser");
-                    store.dispatch(action);
-                  } else {
-                    console.log("user not found");
-                  }
+            <input
+              id="username"
+              onChange={(e) =>
+                setTakeInp({
+                  defaultUser: props.user.username,
+                  username: e.target.value,
                 })
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
-          >
-            Add Friend
-          </button>
+              }
+              placeholder="Type a username"
+              className="frnd-name"
+              type="text"
+            />
 
-          <button className="btn cut" onClick={props.friend}>
-            Close
-          </button>
+            <div className="pop-btn">
+              <button
+                className="btn Add"
+                onClick={() => {
+                  //setTakeInp({defaultUser: props.user.username,...username});
+
+                  if (takeInp.username === props.user.username) {
+                    alert("you can't add yourself as your Friend");
+                    return;
+                  }
+                  console.log(takeInp);
+                  axios
+                    .post("http://localhost:2000/AddFriend", takeInp)
+                    .then((resp) => {
+                      if (resp.data.Status === "S") {
+                        alert("Friend added to your list");
+                      } else {
+                        console.log("user not found");
+                      }
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }}
+              >
+                Add Friend
+              </button>
+
+              <button className="btn cut" onClick={handleclick}>
+                Close
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
 
-const mapStateToProps = state => {
-  console.log("state is  ", state);
-  return {
-    user: state.user
-  };
-};
-
-const fn = connect(mapStateToProps);
-export default fn(Friend);
+export default Friend;

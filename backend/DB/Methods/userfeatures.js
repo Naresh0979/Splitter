@@ -23,9 +23,10 @@ const Find=(username)=>{
 
 },
 
-AddFriend =  async (userObject,response)=>{
+ AddFriend =  async (userObject,response)=>{
+   // console.log(userObject.username);
     var check = await Find(userObject.username);
-    console.log(check);
+  //  console.log(check);
     if(check){
         userModel.findOneAndUpdate({username: userObject.defaultUser},
           {"$push": {"friends" : userObject.username,"expenses":{"name": userObject.username,"data": {}}}},{"new": true},
@@ -73,4 +74,4 @@ const settle=(userObject,response)=>{
 }
    
    
-module.exports =AddFriend,settle,AddExp;
+module.exports ={AddFriend,settle,AddExp};

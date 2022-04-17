@@ -1,6 +1,7 @@
 import React from "react";
 import {useLocation}  from "react-router-dom";
 import {useState} from 'react';
+import SettleUp from "./popups/settleUp";
 import "../../styles/Dashboard.css";
 var exp = 0;
 var owe = [];
@@ -52,12 +53,14 @@ setShowFriend(!showFriend);
 function ShowExpense(){
 // this.setState({...this.state,showExp: !this.state.showExp});
 //console.log(this.state.showExp);
+console.log("expense");
 setShowExp(!showExp);
 }  
 
 function settle(){
 // this.setState({...this.state,settleUp: !this.state.settleUp});
 // console.log(this.state.settleUp);
+console.log(settleUp);
 setSettleUp(!settleUp);
 }
 let location =useLocation();
@@ -71,11 +74,15 @@ let location =useLocation();
           <button className="btn float-right settle" onClick={settle}>
             Settle up
           </button>
-          <button className="btn float-right expense" onClick={ShowFriend}>
+          <button className="btn float-right expense" onClick={ShowExpense}>
             Add an expense
           </button>
         </div>
-
+          {/* {this.state.showFriend && <Friend friend = {this.showFriend.bind(this)}/>} */}
+        {/* {this.state.showExp && <AddExpense friend = {this.showExpense.bind(this)}/>} */}
+        {settleUp && <SettleUp friend = {location.state}/>}
+         
+      
         <div className="total">
           <div className="fitting">
             <label htmlFor="">total balance</label>
@@ -136,7 +143,7 @@ let location =useLocation();
 
         <div>
           <ul>
-          {(owed.length == 0)?<li>You do not owe anything</li>:owed.map(value=>
+          {(owed.length === 0)?<li>You do not owe anything</li>:owed.map(value=>
             <li>
             <img
               className="imgs"
@@ -151,7 +158,7 @@ let location =useLocation();
           </li>
             )}
 
-            {/* <li>
+             {/* <li>
               <img
                 className="imgs"
                 src={require("../../images/person-profile.png")}
@@ -162,8 +169,8 @@ let location =useLocation();
                 <h5>Ram</h5>
                 <span>you owe $500</span>
               </div>
-            </li> */}
-           
+            </li> 
+            */}
             
           </ul>
         </div>

@@ -4,13 +4,13 @@ const auth = require('../DB/auth/auth');
 const userOperation = require('../DB/Methods/userfeatures');
 app.post("/login",(req,res)=>{
     // console.log("header is ",req.header);
-    console.log(req.body);
+   // console.log(req.body);
     auth.Login(req.body,res);
 })
 
 app.post("/signup",(req,res)=>{
     
-    console.log(req.body);
+    // console.log(req.body);
     auth.Register(req.body,res);
 })
 
@@ -55,7 +55,7 @@ app.get("/getUser",(req,res)=>{
 })
 
 app.post('/AddFriend',(req,res)=>{
-    console.log("Hello data ",req.body);
+    // console.log("Hello data ",req.body);
     userOperation.AddFriend(req.body,res);
 })
 

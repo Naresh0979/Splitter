@@ -2,13 +2,13 @@ import React from 'react';
 import '../styles/signup.css';
 //import { withRouter } from "react-router-dom";
 import  {Header}  from './header';
-import {useState} from 'react';
+import {useState} from 'react';  
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // import {instance} from '../utils/AxiosConfig';
-
+ 
  export const SignUp = (props)=>{
    axios.defaults.withCredentials = true;
    let navigate=useNavigate();

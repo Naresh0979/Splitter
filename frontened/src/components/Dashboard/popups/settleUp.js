@@ -1,111 +1,132 @@
-import React from 'react';
-import '../../../styles/frndPop.css';
-import { PaidBy } from './paidBy';
-import { PaidTo } from './paidTo';
-import { connect } from "react-redux";
-import { instance } from '../../../utils/AxiosConfig';
-import { store } from '../../../redux/store';
-import { userActionCreator } from '../../../redux/actionCreator/userAction';
- class SettleUp extends React.Component{
-    constructor(props){
-    super(props);
-    this.val = 0;
-    this.props.user.friends.push(this.props.user.username);
-    this.state = {paidBy:false,paidTo:false,byValue: "you",toValue:"select"}
-    }
-     PaidBy() {
-        this.setState({paidBy: !this.state.paidBy,paidTo:false});
-    }
+import React from "react";
+import "../../../styles/frndPop.css";
+import { PaidBy } from "./paidBy";
+import { PaidTo } from "./paidTo";
+//import { instance } from '../../../utils/AxiosConfig';
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "react";
 
-    PaidTo() {
-        this.setState({paidBy:false,paidTo: !this.state.paidTo});
+const SettleUp = (props) => {
+
+    console.log(props.friend);
+  let location = useLocation();
+  let [val, setVal] = useState(0);
+  const [paidBy, setPaidBy] = useState(false);
+  const [paidTo, setPaidTo] = useState(false);
+  const [byValue, setByValue] = useState("you");
+  const [toValue, setToValue] = useState("to");
+  const PaidBy = () => {
+    //this.setState({paidBy: !this.state.paidBy,paidTo:false});
+    setPaidBy(!paidBy);
+    setPaidTo(false);
+  };
+  const PaidTo = () => {
+    // this.setState({paidBy:false,paidTo: !this.state.paidTo});
+    setPaidBy(false);
+    setPaidTo(!paidTo);
+  };
+  const Save = () => {
+    if (toValue === "select") {
+      alert("please select the reciver");
+      return;
+    } else if (val == "") {
+      alert("you must enter an amount");
+      return;
+    } else if (toValue != "you" && byValue != "you") {
+      alert("you cannot add an Expense that does not involve yourself");
+    } else if (toValue == byValue) {
+      alert("you can't add money to yourself");
+    } else {
+      var sender;
+      if (toValue == "you") {
+        val = "-" + val;
+        sender = byValue;
+      } else sender = toValue;
+
+      console.log(parseInt(val), byValue, toValue);
+      axios
+        .post("/settle", {
+          username: location.state.username,
+          user: sender,
+          val: parseInt(val),
+        })
+        .then((resp) => {
+          console.log(resp.data.doc);
+          //   var action = userActionCreator(resp.data.doc,'AddUser');
+          //   store.dispatch(action);
+
+          //   this.props.friend();
+        });
     }
-    byValue(event){
-       
-     if(event == this.props.user.username) event = "you"
+  };
+  const ByValue = (event) => {
+    if (event === location.state.username) event = "you";
     //  else {
-    //     event = event.slice(0,6); 
+    //     event = event.slice(0,6);
     //     event = event+"..."
     //  }
-       
-        this.setState({...this.state,byValue: event});
-    }
-    toValue(event){
-     if(event == this.props.user.username) event = "you";
-    
-         this.setState({...this.state,toValue: event});
-     }
-     Save(){
-         if(this.state.toValue == "select"){
-             alert("please select the reciver");
-             return;
-         }
-         else if(this.val == ""){
-            alert("you must enter an amount");
-            return;
-         }
-         else if(this.state.toValue != "you" && this.state.byValue != "you"){
-            alert("you cannot add an Expense that does not involve yourself");
-         }
-         else if(this.state.toValue == this.state.byValue){
-            alert("you can't add money to yourself");
-           }
-       else{ 
-           var sender;
-            if(this.state.toValue == "you"){
-                this.val = "-" + this.val;
-                sender =  this.state.byValue;
-            }else sender = this.state.toValue;
 
-            console.log(parseInt(this.val),this.state.byValue,this.state.toValue);
-          instance.post("/settle",{username: this.props.user.username,user: sender,val: parseInt(this.val)}).then((resp)=>{
-              console.log(resp.data.doc);
-              var action = userActionCreator(resp.data.doc,'AddUser');
-              store.dispatch(action);
-              
-              this.props.friend();
-          });
-       } 
-    }
-  render(){
-        return (
-        <div className = "friendPopup">
-        <div className = "flx">
-        <div className = "frnd-content">
-        <div className = "frnd-header">   
-        <span>Settle up</span>
-        <button className = "float-right" onClick = {this.props.friend}><i class="fas fa-times"></i></button>
-        </div>
-
-        <div className = "frnd-set">
-        <button onClick = {this.PaidBy.bind(this)}>{(this.state.byValue == "you")?"you":this.state.byValue.slice(0,6) + "..."}</button> paid <button onClick = {this.PaidTo.bind(this)}>{(this.state.toValue == "you" || this.state.toValue == "select")?this.state.toValue:this.state.toValue.slice(0,6) + "..."}</button>
-        </div>
-      
-      <input className = "money" onChange = {(event)=>{
-          this.val = event.target.value;
-      }} placeholder = "$ 0.0" type="number" name="" id=""/>
-      <div className = "pop-btn bt-mr">
-
-        <button className = "btn Add" onClick = {this.Save.bind(this)}>Save</button>
-
-        <button className = "btn cut" onClick = {this.props.friend}>Close</button>
-    </div>
-        </div>
-        
-        {this.state.paidBy && <PaidBy list = {this.props.user.friends} byValue = {this.byValue.bind(this)}/>}
-        {this.state.paidTo && <PaidTo list = {this.props.user.friends}  toValue = {this.toValue.bind(this)}/>}
-
-        </div>
-
-    </div>
-    )}
-}
-const mapStateToProps = state => {
-    console.log("state is  ", state);
-    return {
-      user: state.user
-    };
+    // this.setState({...this.state,byValue: event});
+    setByValue(event);
   };
-  
-  const fn = connect(mapStateToProps);
-  export default fn(SettleUp);
+  const ToValue = (event) => {
+    if (event === location.state.username) event = "you";
+
+    // this.setState({...this.state,toValue: event});
+    setToValue(event);
+  };
+
+  return (
+    <div className="friendPopup">
+      <div className="flx">
+        <div className="frnd-content">
+          <div className="frnd-header">
+            <span>Settle up</span>
+            <button className="float-right" onClick={props.friend}>
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div className="frnd-set">
+            <button onClick={PaidBy}>
+              {byValue == "you" ? "you" : byValue.slice(0, 6) + "..."}
+            </button>{" "}
+            paid{" "}
+            <button onClick={PaidTo}>
+              {toValue == "you" || toValue == "select"
+                ? toValue
+                : toValue.slice(0, 6) + "..."}
+            </button>
+          </div>
+
+          <input
+            className="money"
+            onChange={(event) => {
+              val = event.target.value;
+            }}
+            placeholder="$ 0.0"
+            type="number"
+            name=""
+            id=""
+          />
+          <div className="pop-btn bt-mr">
+            <button className="btn Add" onClick={Save}>
+              Save
+            </button>
+
+            <button className="btn cut" onClick={props.friend}>
+              Close
+            </button>
+          </div>
+        </div>
+
+        {paidBy && <PaidBy list={props.user.friends} byValue={byValue} />}
+        {paidTo && <PaidTo list={props.user.friends} toValue={toValue} />}
+      </div>
+    </div>
+  );
+};
+
+export default SettleUp;
+

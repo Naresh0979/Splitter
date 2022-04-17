@@ -1,23 +1,31 @@
 import React from 'react';
 import "../../styles/Dashboard.css";
 import {FriendList} from './FriendList';
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
+import Friend from "../Dashboard/popups/Friend";
 export const AddFriend = (props)=>{
-    const [showFriend,setShowFriend]=useState(false);
-    function ShowFriend(){
-        // this.setState({...this.state,showFriend: !this.state.showFriend});
-         setShowFriend(!showFriend);
-         //console.log(this.state.showFriend);
-    }
+var [showFriend,setShowFriend]=useState(false);
+//console.log(showFriend);
+// useEffect(() => {
+       
+//  });
+//console.log(props.username.username);
+ 
     return(
         <div className = "AddFriend">
          
          <div className = "content">
          <div className = "friendHeader" >
             <label htmlFor="">FRIENDS</label>
-            <button onClick = {ShowFriend} className = "AddFrnd float-right">+Add</button>
+            <button onClick = {()=>setShowFriend(!showFriend) } className = "AddFrnd float-right">+Add</button>
           
          </div>
+         {
+             
+             showFriend ?<Friend user={props.username}/>:<span></span>
+
+         }
+      
          <div className = "Friend_List">
                <FriendList/>
          </div>
