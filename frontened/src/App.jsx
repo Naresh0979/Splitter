@@ -18,7 +18,6 @@ export default function App() {
           <Route  path = "/login" element= {<Login/>}></Route>
           <Route  path = "/Dashboard" element= {<Dashboard/>}></Route>
           
-          {/* <Route exact path = "/login" component = {Login_smart}></Route> */}
           
        </Routes>
        </BrowserRouter>

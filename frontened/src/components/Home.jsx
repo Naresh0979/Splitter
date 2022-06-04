@@ -29,7 +29,7 @@ export  const Home = ()=>{
                     <li><i class="fas fa-check-circle"></i> &nbsp;&nbsp;Totally Free for web,iPhone,and Android.</li>
                 </ul>
 
-                <a href="http://localhost:3000/signup">   <button className = "landing-button">  Get Started</button></a>
+                <a href="https://splitter-a.herokuapp.com/signup">   <button className = "landing-button">  Get Started</button></a>
                 </div>
                 </div> 
             </main>

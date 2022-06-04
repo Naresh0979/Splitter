@@ -14,8 +14,6 @@ export const DashHeader = (props) => {
             <button className="logoutbtn">Log Out</button>
           </NavLink>
 
-          {console.log("inside DashHeader")}
-
           <img
             className="profile"
             src={require("../images/person-profile.png")}
