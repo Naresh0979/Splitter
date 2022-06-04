@@ -55,7 +55,7 @@ app.get("/getUser",(req,res)=>{
 })
 
 app.post('/AddFriend',(req,res)=>{
-    // console.log("Hello data ",req.body);
+    //console.log("Hello data ",req.body);
     userOperation.AddFriend(req.body,res);
 })
 

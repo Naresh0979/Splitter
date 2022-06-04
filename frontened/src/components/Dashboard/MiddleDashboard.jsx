@@ -1,7 +1,8 @@
 import React from "react";
 import {useLocation}  from "react-router-dom";
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import SettleUp from "./popups/settleUp";
+import AddExpense from "./popups/addExpense";
 import "../../styles/Dashboard.css";
 var exp = 0;
 var owe = [];
@@ -43,7 +44,21 @@ export  const Middle = (props) => {
   const [showExp,setShowExp]=useState(false);
   const [settleUp,setSettleUp]=useState(false);
 
+  // const [tempexp,setTempexp]=useState(exp);
+  // const [tempowe,setTempowe]=useState(owe);
+  // const [tempowed,setTempowed]=useState(owed);
+  
 
+  // useEffect(() => {
+    
+  // //calculate(location.state);
+  // setTempexp(exp);
+  // setTempowed(owed);
+  // setTempowe(owe);
+  
+    
+  // },[])
+  
 
 function ShowFriend(){
 // this.setState({...this.state,showFriend: !this.state.showFriend});
@@ -55,6 +70,7 @@ function ShowExpense(){
 //console.log(this.state.showExp);
 console.log("expense");
 setShowExp(!showExp);
+console.log(showExp);
 }  
 
 function settle(){
@@ -80,7 +96,8 @@ let location =useLocation();
         </div>
           {/* {this.state.showFriend && <Friend friend = {this.showFriend.bind(this)}/>} */}
         {/* {this.state.showExp && <AddExpense friend = {this.showExpense.bind(this)}/>} */}
-        {settleUp && <SettleUp friend = {location.state}/>}
+        {settleUp && <SettleUp friend = {location.state} closebtn={settleUp} changestate={ settlestate=>setSettleUp(settlestate)}/>}
+        {showExp && <AddExpense friend = {location.state} closebtn={showExp} changestate={ expstate=>setShowExp(expstate)} />}
          
       
         <div className="total">

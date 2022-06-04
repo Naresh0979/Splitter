@@ -12,7 +12,7 @@ const Find=(username)=>{
         //   return false;
         }else{
             if(doc){
-                console.log(doc);
+              //  console.log(doc);
                 // return true;
             }else{
             console.log("not Found");
@@ -24,10 +24,26 @@ const Find=(username)=>{
 },
 
  AddFriend =  async (userObject,response)=>{
-   // console.log(userObject.username);
+  //console.log(userObject.defaultUser);
     var check = await Find(userObject.username);
+     var friend= await Find(userObject.defaultUser);
+   //  console.log(friend.friends);
+     var check2=1;
+    for(let v of friend.friends)
+    {
+        //console.log(v);
+        if(v==userObject.username)
+            {
+                console.log(v);
+                check2=0;
+                break;
+            }
+
+    }
+    
   //  console.log(check);
-    if(check){
+    if(check && check2 == 1){
+
         userModel.findOneAndUpdate({username: userObject.defaultUser},
           {"$push": {"friends" : userObject.username,"expenses":{"name": userObject.username,"data": {}}}},{"new": true},
           (err,doc)=>{
@@ -42,6 +58,9 @@ const Find=(username)=>{
           )
     }else{
         console.log("status Fail")
+        if(check2==0)
+        response.json({Status:"F",msg: "your friend is already added"});
+        else
         response.json({Status:"F",msg: "your friend is not registerd yet"});
     }
   }

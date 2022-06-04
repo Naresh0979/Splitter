@@ -5,26 +5,27 @@ import { PaidTo } from "./paidTo";
 //import { instance } from '../../../utils/AxiosConfig';
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "react";
 
-const SettleUp = (props) => {
+import axios from "axios";
+export default function  SettleUp  (props)  {
 
-    console.log(props.friend);
+  console.log(props.friend);
   let location = useLocation();
   let [val, setVal] = useState(0);
   const [paidBy, setPaidBy] = useState(false);
   const [paidTo, setPaidTo] = useState(false);
   const [byValue, setByValue] = useState("you");
   const [toValue, setToValue] = useState("to");
-  const PaidBy = () => {
+  const Paidby = () => {
     //this.setState({paidBy: !this.state.paidBy,paidTo:false});
     setPaidBy(!paidBy);
     setPaidTo(false);
   };
-  const PaidTo = () => {
+  const Paidto = () => {
     // this.setState({paidBy:false,paidTo: !this.state.paidTo});
     setPaidBy(false);
     setPaidTo(!paidTo);
+    console.log("paidTo");
   };
   const Save = () => {
     if (toValue === "select") {
@@ -33,20 +34,20 @@ const SettleUp = (props) => {
     } else if (val == "") {
       alert("you must enter an amount");
       return;
-    } else if (toValue != "you" && byValue != "you") {
+    } else if (toValue != location.state.username && byValue != location.state.username) {
       alert("you cannot add an Expense that does not involve yourself");
     } else if (toValue == byValue) {
       alert("you can't add money to yourself");
     } else {
       var sender;
-      if (toValue == "you") {
+      if (toValue == location.state.username) {
         val = "-" + val;
         sender = byValue;
       } else sender = toValue;
 
       console.log(parseInt(val), byValue, toValue);
       axios
-        .post("/settle", {
+        .post("http://localhost:2000/settle", {
           username: location.state.username,
           user: sender,
           val: parseInt(val),
@@ -55,28 +56,29 @@ const SettleUp = (props) => {
           console.log(resp.data.doc);
           //   var action = userActionCreator(resp.data.doc,'AddUser');
           //   store.dispatch(action);
-
+          props.changestate(!props.closebtn);
           //   this.props.friend();
         });
     }
   };
-  const ByValue = (event) => {
-    if (event === location.state.username) event = "you";
-    //  else {
-    //     event = event.slice(0,6);
-    //     event = event+"..."
-    //  }
+  // const ByValue = (event) => {
+  //   if (event === location.state.username) event = "you";
+  //   //  else {
+  //   //     event = event.slice(0,6);
+  //   //     event = event+"..."
+  //   //  }
 
-    // this.setState({...this.state,byValue: event});
-    setByValue(event);
-  };
-  const ToValue = (event) => {
-    if (event === location.state.username) event = "you";
+  //   // this.setState({...this.state,byValue: event});
+  //   setByValue(event);
+  // };
+  // const ToValue = (event) => {
+  //   if (event === location.state.username) event = "you";
 
-    // this.setState({...this.state,toValue: event});
-    setToValue(event);
-  };
-
+  //   // this.setState({...this.state,toValue: event});
+  //   setToValue(event);
+  // };
+  let people= props.friend.friends;
+  people.push(location.state.username);
   return (
     <div className="friendPopup">
       <div className="flx">
@@ -89,11 +91,11 @@ const SettleUp = (props) => {
           </div>
 
           <div className="frnd-set">
-            <button onClick={PaidBy}>
+            <button onClick={Paidby}>
               {byValue == "you" ? "you" : byValue.slice(0, 6) + "..."}
             </button>{" "}
             paid{" "}
-            <button onClick={PaidTo}>
+            <button onClick={ Paidto}>
               {toValue == "you" || toValue == "select"
                 ? toValue
                 : toValue.slice(0, 6) + "..."}
@@ -115,18 +117,18 @@ const SettleUp = (props) => {
               Save
             </button>
 
-            <button className="btn cut" onClick={props.friend}>
+            <button className="btn cut" onClick={()=>props.changestate(!props.closebtn)}>
               Close
             </button>
           </div>
         </div>
 
-        {paidBy && <PaidBy list={props.user.friends} byValue={byValue} />}
-        {paidTo && <PaidTo list={props.user.friends} toValue={toValue} />}
+        {paidBy && <PaidBy list={people}  closebtn={paidBy} changestate={ state=>setPaidBy(state)} byValue={ value=>setByValue(value)} />}
+        {paidTo && <PaidTo list={people} closebtn={paidTo} changestate={ state=>setPaidTo(state)} toValue={ value=>setToValue(value)} />}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SettleUp;
+
 

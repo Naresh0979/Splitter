@@ -61,6 +61,7 @@ const Friend = (props) => {
                         alert("Friend added to your list");
                       } else {
                         console.log("user not found");
+                        alert(resp.data.msg);
                       }
                     })
                     .catch((err) => {
