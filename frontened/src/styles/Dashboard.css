@@ -7,13 +7,13 @@
 }
 
 .friendHeader{
-    opacity: 0.5;  
+    opacity: 1;  
 }
 .friendHeader:hover{
     opacity: 0.9;
 }
 .Friend_List{
-    opacity: 0.8;
+    opacity: 1;
 }
 .friendlist{
     list-style-type: none;
