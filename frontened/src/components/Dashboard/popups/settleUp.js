@@ -77,8 +77,8 @@ export default function  SettleUp  (props)  {
   //   // this.setState({...this.state,toValue: event});
   //   setToValue(event);
   // };
-  let people= props.friend.friends;
-  people.push(location.state.username);
+  // let people= props.friend.friends;
+  // people.push(location.state.username);
   return (
     <div className="friendPopup">
       <div className="flx">
@@ -123,8 +123,8 @@ export default function  SettleUp  (props)  {
           </div>
         </div>
 
-        {paidBy && <PaidBy list={people}  closebtn={paidBy} changestate={ state=>setPaidBy(state)} byValue={ value=>setByValue(value)} />}
-        {paidTo && <PaidTo list={people} closebtn={paidTo} changestate={ state=>setPaidTo(state)} toValue={ value=>setToValue(value)} />}
+        {paidBy && <PaidBy list={props.friend.friends}  closebtn={paidBy} changestate={ state=>setPaidBy(state)} byValue={ value=>setByValue(value)} />}
+        {paidTo && <PaidTo list={props.friend.friends} closebtn={paidTo} changestate={ state=>setPaidTo(state)} toValue={ value=>setToValue(value)} />}
       </div>
     </div>
   )

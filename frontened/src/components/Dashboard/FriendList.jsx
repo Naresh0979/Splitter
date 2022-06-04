@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 //mport { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useEffect,useState } from "react";
@@ -7,7 +8,11 @@ export const FriendList = (props) => {
   const [friend,setFriend]=useState([]);
   useEffect(() => {
 
-    setFriend(location.state.friends);
+    //setFriend(location.state.friends);
+    axios.post('http://localhost:2000/getData',location.state).then((resp)=>{
+    console.log(resp.data.user,"abc");
+          setFriend(resp.data.user.friends);
+       })
   },[location.state.friends] )
   
  // console.log(location.state.friends[0]);

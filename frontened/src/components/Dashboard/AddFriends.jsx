@@ -22,7 +22,7 @@ var [showFriend,setShowFriend]=useState(false);
          </div>
          {
              
-             showFriend ?<Friend user={props.username}/>:<span></span>
+             showFriend ?<Friend user={props.username}   />:<span></span>
 
          }
       

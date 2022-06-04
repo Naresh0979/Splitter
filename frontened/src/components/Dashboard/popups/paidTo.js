@@ -1,6 +1,7 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 export const PaidTo = (props) => {
-
+  let location=useLocation();
   //  console.log("inside paid to");
   return (
     <div className="secondBox">
@@ -27,6 +28,21 @@ export const PaidTo = (props) => {
             </li>
           );
         })}
+         <li
+              onClick={(event) => {
+                props.toValue(event.target.id);
+                props.changestate(!props.closebtn);
+              }}
+              id={location.state.username}
+            >
+              <img
+                className="pro-img"
+                src={require("../../../images/person-profile.png")}
+                alt=""
+                srcset=""
+              />
+              {location.state.username}
+            </li>
       </ul>
     </div>
   );

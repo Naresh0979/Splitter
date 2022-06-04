@@ -59,6 +59,7 @@ const Friend = (props) => {
                     .then((resp) => {
                       if (resp.data.Status === "S") {
                         alert("Friend added to your list");
+
                       } else {
                         console.log("user not found");
                         alert(resp.data.msg);
