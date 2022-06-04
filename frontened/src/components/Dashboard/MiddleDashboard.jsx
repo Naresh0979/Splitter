@@ -4,15 +4,22 @@ import {useState,useEffect} from 'react';
 import SettleUp from "./popups/settleUp";
 import AddExpense from "./popups/addExpense";
 import "../../styles/Dashboard.css";
+import axios from "axios";
 var exp = 0;
 var owe = [];
 var owed = [];
 
-function calculate(state){
+ function calculate(state){
    exp = 0;
   
    owe = []; 
    owed = [];
+//    var state;
+//     axios.post('http://localhost:2000/getData',user).then((resp)=>{
+//     //console.log(resp.data.user,"abc");
+//     state= resp.data.user;
+// })
+console.log(state);
    if(state.expenses){
      console.log("****************************m kitni barri hu *********************************");
      state.expenses.forEach(element => {
@@ -21,15 +28,15 @@ if(element.data){
   exp += parseInt(element.data.ammount);
       if(element.data.ammount>0){
         
-        console.log("element.data.ammount>0")
+        // console.log("element.data.ammount>0")
         owed.push(element);
-        console.log(owed);
+        // console.log(owed);
       }else if(element.data.ammount<0){
-        console.log("element.data.ammount<0");
+        // console.log("element.data.ammount<0");
         // element.data.ammount = -(element.data.ammount);
         owe.push(element);
         // owe[owe.length].data.ammount = -( owe[owe.length].data.ammount );
-        console.log(owe);
+        // console.log(owe);
       }
     }
    });
@@ -48,16 +55,23 @@ export  const Middle = (props) => {
   // const [tempowe,setTempowe]=useState(owe);
   // const [tempowed,setTempowed]=useState(owed);
   
+  const[user,setUser]=useState([]);
+  var location =useLocation();
+//var user=location.state;
 
-  // useEffect(() => {
+//   async function getuser (){
+//     await axios.post('http://localhost:2000/getData',location.state).then((resp)=>{
+//       //console.log(resp.data.user,"abc");
+//       return resp.data.user;
+//   })
+// }
+ useEffect(() => {
     
-  // //calculate(location.state);
-  // setTempexp(exp);
-  // setTempowed(owed);
-  // setTempowe(owe);
-  
-    
-  // },[])
+  axios.post('http://localhost:2000/getData',location.state).then((resp)=>{
+    console.log(resp.data.user,"abc");
+          setUser(resp.data.user);
+       })
+   },[showExp,settleUp,showFriend])
   
 
 function ShowFriend(){
@@ -79,10 +93,16 @@ function settle(){
 console.log(settleUp);
 setSettleUp(!settleUp);
 }
-let location =useLocation();
+
+
+//const[user,setUser]=useState(location.state);
+ 
+
+//console.log(user);
+//console.log(props.username,"user");
   return (
     <div className="Middle">
-     {calculate(location.state)} 
+      {calculate(user)}  
       
       <div className="MidDash"> 
         <div className="DashHeader">

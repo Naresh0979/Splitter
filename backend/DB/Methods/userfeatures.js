@@ -93,4 +93,4 @@ const settle=(userObject,response)=>{
 }
    
    
-module.exports ={AddFriend,settle,AddExp};
+module.exports ={AddFriend,settle,AddExp,Find};

@@ -15,8 +15,9 @@ app.post("/signup",(req,res)=>{
 })
 
 app.post("/getData",async(req,res)=>{
+   // console.log(req.body.username);
     var result =  await userOperation.Find(req.body.username);
-
+      //  console.log(result);
     // result.then((data)=>console.log("hmmmm",data));
     if(result){
         res.json({user: result});
