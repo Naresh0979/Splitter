@@ -14,7 +14,7 @@ export   const Header = (props)=>{
     // </nav>
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
   
-  <Navbar.Brand href="/"><h3 className = "landing-name">S P L I T T E R</h3></Navbar.Brand>
+  <h3 className = "landing-name">S P L I T T E R</h3>
   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
   <Navbar.Collapse id="responsive-navbar-nav">
   <div className = "float">

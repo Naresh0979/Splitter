@@ -6,7 +6,7 @@ export  const DashHeader = (props)=>{
     
     return (
         <nav className = "DashboardNav fixed-top">
-        <NavLink to = "/Dashboard"><h3 className = "landing-name">S P L I T T E R</h3></NavLink> 
+        <h3 className = "landing-name">S P L I T T E R</h3>
      
      <div className = "Dashfloat">
      <NavLink to = "/login"><button className = "logoutbtn"

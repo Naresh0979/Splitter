@@ -21,12 +21,12 @@ import axios from "axios";
       <div className = "container signup">
       
       <div className = "signup-logo">
-    <img  src={require("../images/logo.png")} alt=""/>
+    <img  src={require("../images/splitter_logo.PNG")} alt=""/>
     </div>
 
 
     <div className = "signup-form">
-      <h3>INTRODUCE YOURSELF</h3>
+      <h3>CREATE ACCOUNT</h3>
       <label htmlFor="">Hi there! My name is</label>
 
       <input id = "username" 
@@ -44,7 +44,7 @@ import axios from "axios";
 
       <input id = "password"  value={password}
       onChange={(e) => setPassword(e.target.value)}
-      className = "form-control" type="text" required/>
+      className = "form-control" type="password" required/>
 
      <button onClick = {()=>{
       
